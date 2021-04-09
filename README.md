@@ -9,38 +9,29 @@ ROS Melodic Morenia (Need to build cv_bridge(python3 version))
 
 
 
-## Install requirement
+## Clone and Install requirement
 ```bash
-# upgrade pip
-python3 -m pip install --upgrade pip
+mkdir -p catkin_ws_pytorch_yolov5/src
+cd catkin_ws_pytorch_yolov5/src
+git clone https://github.com/Shua-Kang/ros_pytorch_yolov5.git
 
+# If pytorch gpu is needed, install pytorch with gpu firstly. See https://pytorch.org/get-started/locally/
+# Upgrade pip and install requirement
 cd yolov5_pytorch_ros/src/yolov5/
+python3 -m pip install --upgrade pip
 pip3 install -r requirements.txt
 ```
 
 ## Run in ROS Noetic Ninjemys
 
-### Build and source
+### Build yolov5 pytorch
 ```bash
-mkdir -p catkin_ws_pytorch_yolov5/src
-cd catkin_ws_pytorch_yolov5/src
-git clone https://github.com/Shua-Kang/ros_pytorch_yolov5.git
-cd ..
+cd catkin_ws_pytorch_yolov5
 catkin init
 catkin build
-source devel/setup.bash
 ```
 
-### Launch yolov5_torch node in one terminal
-```bash
-roslaunch yolov5_torch detector.launch
-```
 
-### Rosbag play in another terminal
-```bash
-cd bag_dataset
-rosbag play test_yolo.bag
-```
 ## Run in ROS Melodic Morenia
 
 ### Build cv_bridge (Ros Melodic require) 
@@ -61,27 +52,43 @@ catkin config -DPYTHON_EXECUTABLE=/usr/bin/python3 -DPYTHON_INCLUDE_DIR=/usr/inc
 catkin config --install
 catkin build
 ```
-### Build and source
+### Build yolov5 pytorch
 ```bash
 cd yolov5_pytorch_ros
 catkin init
 catkin build
+```
+
+
+
+### (ROS Noetic) Launch yolov5_torch node in one terminal
+```bash
+cd catkin_ws_pytorch_yolov5
+source devel/setup.bash
+roslaunch yolov5_torch detector.launch device:=cpu
+#or launch with gpu device 0
+roslaunch yolov5_torch detector.launch device:=0
+# multi-gpu: roslaunch yolov5_torch detector.launch device:=0,1
+```
+### (ROS Melodic) Launch yolov5_torch node in one terminal
+```bash
+cd catkin_ws_pytorch_yolov5
 source devel/setup.bash
 cd catkin_ws_cv_bridge
 # using --extend to avoid replace previous source
 source install/setup.bash --extend
-```
 
-### Launch yolov5_torch node
-```bash
 roslaunch yolov5_torch detector.launch device:=cpu
 #or launch with gpu device 0
 roslaunch yolov5_torch detector.launch device:=0
 # multi-gpu: roslaunch yolov5_torch detector.launch device:=0,1
 ```
 
-### Rosbag play
+
+### Rosbag play in another terminal
 ```bash
-cd bag_dataset
+cd catkin_ws_pytorch_yolov5
+source devel/setup.bash
+cd src/yolov5_pytorch_ros/bag_dataset
 rosbag play test_yolo.bag
 ```
