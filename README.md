@@ -61,7 +61,7 @@ catkin config -DPYTHON_EXECUTABLE=/usr/bin/python3 -DPYTHON_INCLUDE_DIR=/usr/inc
 catkin config --install
 catkin build
 ```
-## Build and source
+### Build and source
 ```bash
 cd yolov5_pytorch_ros
 catkin init
@@ -72,12 +72,12 @@ cd catkin_ws_cv_bridge
 source install/setup.bash --extend
 ```
 
-## Launch yolov5_torch node
+### Launch yolov5_torch node
 ```bash
 roslaunch yolov5_torch detector.launch
 ```
 
-## Rosbag play
+### Rosbag play
 ```bash
 cd bag_dataset
 rosbag play test_yolo.bag
