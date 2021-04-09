@@ -22,7 +22,10 @@ pip3 install -r requirements.txt
 
 ### Build and source
 ```bash
-cd yolov5_pytorch_ros
+mkdir -p catkin_ws_pytorch_yolov5/src
+cd catkin_ws_pytorch_yolov5/src
+git clone https://github.com/Shua-Kang/ros_pytorch_yolov5.git
+cd ..
 catkin init
 catkin build
 source devel/setup.bash
