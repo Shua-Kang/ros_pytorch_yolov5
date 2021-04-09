@@ -47,7 +47,8 @@ class detectManager:
         self.name = rospy.get_param('~name')
         self.exist_ok = rospy.get_param('~exist_ok')
         self.project = rospy.get_param('~project')
-        self.device = rospy.get_param('~device')
+        self.device = str(rospy.get_param('~device'))
+
         self.augment = rospy.get_param('~augment')
         self.iou_thres = rospy.get_param('~iou_thres')
         if(rospy.get_param('~classes') == 'None'):
@@ -227,7 +228,8 @@ class detectManager:
             cudnn.benchmark = True  # set True to speed up constant image size inference
             dataset = LoadStreams(source, img_size=imgsz, stride=stride)
         else:
-            save_img = True
+            #save_img = True
+            save_img = False
             dataset = LoadImages(source, img_size=imgsz, stride=stride)
 
         # Get names and colors
@@ -288,8 +290,8 @@ class detectManager:
             # else:
             #     p, s, im0, frame = path, '', im0s, getattr(dataset, 'frame', 0)
             # p = Path(p)  # to Path
-            save_path = "/workspace/yolov5/results/img.jpg"  # img.jpg
-            txt_path = "/workspace/yolov5/results/label.txt"
+            #save_path = str(self.save_dir + "/img.jpg")  # img.jpg
+            #txt_path = str(self.save_dir + "/labels/label")
             s = ''
             s += '%gx%g ' % img.shape[2:]  # print string
             gn = torch.tensor(im0.shape)[[1, 0, 1, 0]]  # normalization gain whwh

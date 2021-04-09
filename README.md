@@ -74,7 +74,10 @@ source install/setup.bash --extend
 
 ### Launch yolov5_torch node
 ```bash
-roslaunch yolov5_torch detector.launch
+roslaunch yolov5_torch detector.launch device:=cpu
+#or launch with gpu device 0
+roslaunch yolov5_torch detector.launch device:=0
+# multi-gpu: roslaunch yolov5_torch detector.launch device:=0,1
 ```
 
 ### Rosbag play

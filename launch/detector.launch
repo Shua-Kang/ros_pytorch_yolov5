@@ -3,7 +3,7 @@
     <arg name="weights" default="yolov5l.pt"/>
     <arg name="source" default="data/images"/>
     <arg name="view_img" default="False"/>
-    <arg name="save_txt" default="True"/>
+    <arg name="save_txt" default="False"/>
     <arg name="img_size" default="640"/>
     <arg name="name" default="exp"/>
     <arg name="exist_ok" default="True"/>
