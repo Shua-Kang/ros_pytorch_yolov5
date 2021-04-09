@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<launch>
+    <arg name="weights" default="yolov5l.pt"/>
+    <arg name="source" default="data/images"/>
+    <arg name="view_img" default="False"/>
+    <arg name="save_txt" default="True"/>
+    <arg name="img_size" default="640"/>
+    <arg name="name" default="exp"/>
+    <arg name="exist_ok" default="True"/>
+    <arg name="project" default="runs/result"/>
+    <arg name="device" default="cpu"/>
+    <arg name="augment" default="True"/>
+    <arg name="iou_thres" default="0.45"/>
+    <arg name="classes" default="None"/>
+    <arg name="agnostic_nms" default="True"/>
+    <arg name="conf_thres" default="0.25"/>
+    <arg name="save_conf" default="True"/>
+
+    <!-- Published topics -->
+    <arg name="publish_image" default="true"/>
+    <arg name="detected_objects_topic" default="detected_objects_in_image"/>
+    <arg name="detections_image_topic" default="detections_image_topic"/>
+    <arg name="detections_results_topic" default="detections_results_topic"/>
+
+    <arg name="image_topic" default="/camera/color/image_raw"/>
+
+    <!-- Node -->
+    <node name="detect_manager" pkg="yolov5_torch" type="detect.py" output="screen" respawn="true">
+        <param name="weights" value="$(arg weights)"/>
+        <param name="source" value="$(arg source)"/>
+        <param name="view_img" value="$(arg view_img)"/>
+        <param name="save_txt" value="$(arg save_txt)"/>
+        <param name="img_size" value="$(arg img_size)"/>
+        <param name="name" value="$(arg name)"/>
+        <param name="exist_ok" value="$(arg exist_ok)"/>
+        <param name="project" value="$(arg project)"/>
+        <param name="device" value="$(arg device)"/>
+        <param name="augment" value="$(arg augment)"/>
+        <param name="iou_thres" value="$(arg iou_thres)"/>
+        <param name="classes" value="$(arg classes)"/>
+        <param name="agnostic_nms" value="$(arg agnostic_nms)"/>
+        <param name="conf_thres" value="$(arg conf_thres)"/>
+        <param name="save_conf" value="$(arg save_conf)"/>
+        <param name="detected_objects_topic" value="$(arg detected_objects_topic)"/>
+        <param name="publish_image" value="$(arg publish_image)"/>
+        <param name="detections_image_topic" value="$(arg detections_image_topic)"/>
+        <param name="image_topic" value="$(arg image_topic)"/>
+        <param name="detections_results_topic" value="$(arg detections_results_topic)"/>
+    </node>
+</launch>
