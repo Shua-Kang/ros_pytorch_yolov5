@@ -1,5 +1,3 @@
-# yolov5_pytorch_ros
-
 ## Ros Requirement
 ROS Noetic Ninjemys (Recommanded)
 
