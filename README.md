@@ -22,7 +22,7 @@ python3 -m pip install --upgrade pip
 pip3 install -r requirements.txt
 ```
 
-## Run in ROS Noetic Ninjemys
+## Build in ROS Noetic Ninjemys
 
 ### Build yolov5 pytorch
 ```bash
@@ -32,7 +32,7 @@ catkin build
 ```
 
 
-## Run in ROS Melodic Morenia
+## Build in ROS Melodic Morenia
 
 ### Build cv_bridge (Ros Melodic require) 
 The default cv_bridge in ros melodic is python2 version.
@@ -59,9 +59,9 @@ catkin init
 catkin build
 ```
 
+## Start
 
-
-### (ROS Noetic) Launch yolov5_torch node in one terminal
+### (For ROS Noetic) Launch yolov5_torch Node in One Terminal
 ```bash
 cd catkin_ws_pytorch_yolov5
 source devel/setup.bash
@@ -70,7 +70,7 @@ roslaunch yolov5_torch detector.launch device:=cpu
 roslaunch yolov5_torch detector.launch device:=0
 # multi-gpu: roslaunch yolov5_torch detector.launch device:=0,1
 ```
-### (ROS Melodic) Launch yolov5_torch node in one terminal
+### (For ROS Melodic) Launch yolov5_torch Node in One Terminal
 ```bash
 cd catkin_ws_pytorch_yolov5
 source devel/setup.bash
@@ -85,7 +85,7 @@ roslaunch yolov5_torch detector.launch device:=0
 ```
 
 
-### Rosbag play in another terminal
+### Rosbag Play in Another Terminal
 ```bash
 cd catkin_ws_pytorch_yolov5
 source devel/setup.bash
