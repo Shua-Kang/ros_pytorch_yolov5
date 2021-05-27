@@ -15,7 +15,7 @@ git clone https://github.com/Shua-Kang/ros_pytorch_yolov5.git
 
 # If pytorch gpu is needed, install pytorch with gpu firstly. See https://pytorch.org/get-started/locally/
 # Upgrade pip and install requirement
-cd yolov5_pytorch_ros/src/yolov5/
+cd ros_pytorch_yolov5/src/yolov5/
 python3 -m pip install --upgrade pip
 pip3 install -r requirements.txt
 ```
@@ -52,7 +52,7 @@ catkin build
 ```
 ### Build yolov5 pytorch
 ```bash
-cd yolov5_pytorch_ros
+cd ros_pytorch_yolov5
 catkin init
 catkin build
 ```
@@ -87,6 +87,6 @@ roslaunch yolov5_torch detector.launch device:=0
 ```bash
 cd catkin_ws_pytorch_yolov5
 source devel/setup.bash
-cd src/yolov5_pytorch_ros/bag_dataset
+cd src/ros_pytorch_yolov5/bag_dataset
 rosbag play test_yolo.bag
 ```

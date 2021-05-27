@@ -1,6 +1,6 @@
 <?xml version="1.0"?>
 <package format="2">
-  <name>yolov5_torch_ros</name>
+  <name>ros_pytorch_yolov5</name>
   <version>0.1.0</version>
   <description>The YOLOv5 PyTorch ROS wrapper package</description>
 
