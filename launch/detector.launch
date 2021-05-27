@@ -25,7 +25,7 @@
     <arg name="image_topic" default="/camera/color/image_raw"/>
 
     <!-- Node -->
-    <node name="detect_manager" pkg="yolov5_torch" type="detect.py" output="screen" respawn="true">
+    <node name="detect_manager" pkg="ros_pytorch_yolov5" type="detect.py" output="screen" respawn="true">
         <param name="weights" value="$(arg weights)"/>
         <param name="source" value="$(arg source)"/>
         <param name="view_img" value="$(arg view_img)"/>

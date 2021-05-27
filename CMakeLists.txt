@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 2.8.12)
-project(yolov5_torch)
+project(ros_pytorch_yolov5)
 
 find_package(catkin REQUIRED
   COMPONENTS
