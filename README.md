@@ -63,7 +63,7 @@ catkin build
 ```bash
 cd catkin_ws_pytorch_yolov5
 source devel/setup.bash
-roslaunch yolov5_torch detector.launch device:=cpu
+roslaunch ros_pytorch_yolov5 detector.launch device:=cpu
 #or launch with gpu device 0
 roslaunch yolov5_torch detector.launch device:=0
 # multi-gpu: roslaunch yolov5_torch detector.launch device:=0,1
@@ -76,9 +76,9 @@ cd catkin_ws_cv_bridge
 # using --extend to avoid replace previous source
 source install/setup.bash --extend
 
-roslaunch yolov5_torch detector.launch device:=cpu
+roslaunch ros_pytorch_yolov5 detector.launch device:=cpu
 #or launch with gpu device 0
-roslaunch yolov5_torch detector.launch device:=0
+roslaunch ros_pytorch_yolov5 detector.launch device:=0
 # multi-gpu: roslaunch yolov5_torch detector.launch device:=0,1
 ```
 
