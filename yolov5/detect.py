@@ -9,7 +9,7 @@ from rospkg import RosPack
 from std_msgs.msg import UInt8
 from sensor_msgs.msg import Image
 from geometry_msgs.msg import Polygon, Point32
-from yolov5_torch.msg import BoundingBox, BoundingBoxes
+from ros_pytorch_yolov5.msg import BoundingBox, BoundingBoxes
 from cv_bridge import CvBridge, CvBridgeError
 from skimage.transform import resize
 
@@ -34,7 +34,7 @@ from torch.autograd import Variable
 
 import os
 package = RosPack()
-package_path = package.get_path('yolov5_torch')
+package_path = package.get_path('ros_pytorch_yolov5')
 
 class detectManager:
     def __init__(self):

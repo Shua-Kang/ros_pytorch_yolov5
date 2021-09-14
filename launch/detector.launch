@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <launch>
-    <arg name="weights" default="yolov5l.pt"/>
+    <arg name="weights" default="yolov5s.pt"/>
     <arg name="source" default="data/images"/>
     <arg name="view_img" default="False"/>
     <arg name="save_txt" default="False"/>
@@ -22,7 +22,7 @@
     <arg name="detections_image_topic" default="detections_image_topic"/>
     <arg name="detections_results_topic" default="detections_results_topic"/>
 
-    <arg name="image_topic" default="/camera/color/image_raw"/>
+    <arg name="image_topic" default="/cam0/image_raw"/>
 
     <!-- Node -->
     <node name="detect_manager" pkg="ros_pytorch_yolov5" type="detect.py" output="screen" respawn="true">
