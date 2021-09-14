@@ -48,9 +48,10 @@ class detectManager:
         self.exist_ok = rospy.get_param('~exist_ok')
         self.project = rospy.get_param('~project')
         self.device = str(rospy.get_param('~device'))
-
+        self.device = select_device(self.device)
         self.augment = rospy.get_param('~augment')
         self.iou_thres = rospy.get_param('~iou_thres')
+        self.half = True
         if(rospy.get_param('~classes') == 'None'):
             self.classes = None
         else:
@@ -62,6 +63,8 @@ class detectManager:
         # Initialize width and height
         self.h = 0
         self.w = 0
+        
+        self.model = ''
 
         # Load other parameters
         self.gpu_id = rospy.get_param('~gpu_id', 0)
@@ -89,6 +92,7 @@ class detectManager:
         self.path = package_path
         # print("\nbehind spin\n")
         # Spin
+        self.warmup()
         rospy.spin()
 
     def imageCb(self, data):
@@ -185,9 +189,16 @@ class detectManager:
         image_msg = self.bridge.cv2_to_imgmsg(imgOut, "rgb8")
         self.pub_viz_.publish(image_msg)
 
+    def warmup(self):
+        self.weights = os.path.join(package_path, 'yolov5/weights', self.weights)
+        print("Load model: " + self.weights)
+        self.model = attempt_load(self.weights, map_location=self.device)  # load FP32 model
+        if self.half:
+            self.model.half()  # to FP16
+
 
     def detect(self, opencv_img, data, save_img=False):
-        self.weights = os.path.join(package_path, 'yolov5/weights', self.weights)
+        
         self.source = os.path.join(package_path,'yolov5', self.source)
         # print(self.weights)
         source, weights, view_img, save_txt, imgsz = self.source, self.weights, self.view_img, self.save_txt, self.img_size
@@ -203,16 +214,15 @@ class detectManager:
 
         # Initialize
         set_logging()
-        device = select_device(self.device)
+        device = self.device
         half = device.type != 'cpu'  # half precision only supported on CUDA
 
         # print(os.getcwd())
         # Load model
-        model = attempt_load(weights, map_location=device)  # load FP32 model
+        model = self.model
         stride = int(model.stride.max())  # model stride
         imgsz = check_img_size(imgsz, s=stride)  # check img_size
-        if half:
-            model.half()  # to FP16
+
 
         # Second-stage classifier
         classify = False
