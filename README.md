@@ -15,7 +15,7 @@ git clone https://github.com/Shua-Kang/ros_pytorch_yolov5.git
 
 # If pytorch gpu is needed, install pytorch with gpu firstly. See https://pytorch.org/get-started/locally/
 # Upgrade pip and install requirement
-cd ros_pytorch_yolov5/src/yolov5/
+cd ros_pytorch_yolov5/yolov5/
 python3 -m pip install --upgrade pip
 pip3 install -r requirements.txt
 ```
