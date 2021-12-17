@@ -51,7 +51,10 @@ class detectManager:
         self.device = select_device(self.device)
         self.augment = rospy.get_param('~augment')
         self.iou_thres = rospy.get_param('~iou_thres')
-        self.half = True
+        if(self.device.type!="cpu"):
+            self.half = True
+        else:
+            self.half = False
         if(rospy.get_param('~classes') == 'None'):
             self.classes = None
         else:
