@@ -22,7 +22,7 @@
     <arg name="detections_image_topic" default="detections_image_topic"/>
     <arg name="detections_results_topic" default="detections_results_topic"/>
 
-    <arg name="image_topic" default="/cam0/image_raw"/>
+    <arg name="image_topic" default="/camera/color/image_raw"/>
 
     <!-- Node -->
     <node name="detect_manager" pkg="ros_pytorch_yolov5" type="detect.py" output="screen" respawn="true">
