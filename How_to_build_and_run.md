@@ -49,6 +49,7 @@ catkin config -DPYTHON_EXECUTABLE=/usr/bin/python3 -DPYTHON_INCLUDE_DIR=/usr/inc
 # Instruct catkin to install built packages into install place. It is $CATKIN_WORKSPACE/install folder
 catkin config --install
 catkin build
+# If it has opencv version error, replace opencv4 with opencv3 by pip. See [issue3](https://github.com/Shua-Kang/ros_pytorch_yolov5/issues/3) for more help
 ```
 ### Build yolov5 pytorch
 ```bash
