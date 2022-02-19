@@ -92,3 +92,15 @@ source devel/setup.bash
 wget https://star-center.shanghaitech.edu.cn/seafhttp/files/40e2321b-70fb-44d9-95b3-125aa4349c57/Normal.bag -O test.bag
 rosbag play test.bag
 ```
+
+### Rviz
+remove  view_img:=True or set view_img:=False
+```bash
+cd catkin_ws_pytorch_yolov5
+source devel/setup.bash
+rivz
+```
+1. Add Displays panel.
+2. Set Display type to Image.
+3. Set Image Topic to /detections_image_topic
+![](rviz.png)

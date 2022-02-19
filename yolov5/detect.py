@@ -346,6 +346,8 @@ class detectManager:
             if view_img:
                 cv2.imshow(str(p), im0)
                 cv2.waitKey(1)  # 1 millisecond
+            img_msg = self.bridge.cv2_to_imgmsg(im0, encoding="bgr8")
+            self.pub_viz_.publish(img_msg)
             # Save results (image with detections)
             if save_img:
                 if dataset.mode == 'image':
