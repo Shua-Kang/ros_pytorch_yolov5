@@ -319,11 +319,11 @@ class detectManager:
                 
                 xmin, ymin, xmax, ymax, conf, det_class = det[0]
                 detection_msg = BoundingBox()
-                detection_msg.xmin = xmin
-                detection_msg.xmax = xmax
-                detection_msg.ymin = ymin
-                detection_msg.ymax = ymax
-                detection_msg.probability = conf
+                detection_msg.xmin = int(xmin.item())
+                detection_msg.xmax = int(xmax.item())
+                detection_msg.ymin = int(ymin.item())
+                detection_msg.ymax = int(ymax.item())
+                detection_msg.probability = conf.item()
                 detection_msg.Class = names[int(det_class)]
                 detection_results.bounding_boxes.append(detection_msg)
 
