@@ -1,5 +1,5 @@
 # Ros_pytorch_yolov5
-A ROS wrapper for [yolov5](https://github.com/ultralytics/yolov5) (v5.0 version).
+A ROS wrapper for [yolov5](https://github.com/ultralytics/yolov5) (v6.1 version).
 
 I have tested this repo at intel cpu and single Nvidia-GPU. If you have any questions, feel free to create an issue or directly send me an email to jiuerrose@outlook.com.
 
