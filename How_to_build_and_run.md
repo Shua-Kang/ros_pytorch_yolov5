@@ -88,8 +88,7 @@ roslaunch ros_pytorch_yolov5 detector.launch device:=0 view_img:=True
 ```bash
 cd catkin_ws_pytorch_yolov5
 source devel/setup.bash
-# or download Noraml.bag from [link](https://star-center.shanghaitech.edu.cn/seafile/d/0ea45d1878914077ade5/) as test.bag
-wget https://star-center.shanghaitech.edu.cn/seafhttp/files/40e2321b-70fb-44d9-95b3-125aa4349c57/Normal.bag -O test.bag
+# download Noraml.bag from https://star-center.shanghaitech.edu.cn/seafile/d/0ea45d1878914077ade5/ as test.bag
 rosbag play test.bag
 ```
 
