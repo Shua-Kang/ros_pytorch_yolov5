@@ -43,6 +43,7 @@ class detectManager:
         self.source = rospy.get_param('~source')
         self.view_img = rospy.get_param('~view_img')
         self.save_txt = rospy.get_param('~save_txt')
+        self.save_txt = False
         self.img_size = rospy.get_param('~img_size')
         self.name = rospy.get_param('~name')
         self.exist_ok = rospy.get_param('~exist_ok')
@@ -93,7 +94,6 @@ class detectManager:
             self.published_image_topic, Image, queue_size=10)
         rospy.loginfo("Launched node for object detection")
         self.path = package_path
-        # print("\nbehind spin\n")
         # Spin
         self.warmup()
         rospy.spin()
@@ -118,8 +118,6 @@ class detectManager:
         # Get detections from network
         with torch.no_grad():
             detections = self.detect(self.cv_image, data)
-            # detections = non_max_suppression(
-            #     detections, 80, self.confidence_th, self.nms_th)
         return 0
 
 
@@ -157,40 +155,6 @@ class detectManager:
         input_img = input_img[None]
 
         return input_img
-
-    def visualizeAndPublish(self, output, imgIn):
-        # Copy image and visualize
-        imgOut = imgIn.copy()
-        font = cv2.FONT_HERSHEY_SIMPLEX
-        fontScale = 0.8
-        thickness = 2
-        for index in range(len(output.bounding_boxes)):
-            label = output.bounding_boxes[index].Class
-            x_p1 = output.bounding_boxes[index].xmin
-            y_p1 = output.bounding_boxes[index].ymin
-            x_p3 = output.bounding_boxes[index].xmax
-            y_p3 = output.bounding_boxes[index].ymax
-            confidence = output.bounding_boxes[index].probability
-
-            # Find class color
-            if label in self.classes_colors.keys():
-                color = self.classes_colors[label]
-            else:
-                # Generate a new color if first time seen this label
-                color = np.random.randint(0, 255, 3)
-                self.classes_colors[label] = color
-
-            imgOut = np.array(imgOut)
-            # cv2.rectangle(imgOut, (int(x_p1), int(y_p1)), (int(x_p3), int(y_p3)), (color[0],color[1],color[2]),thickness)
-            cv2.rectangle(imgOut, (int(x_p1), int(y_p1)), (int(x_p3), int(
-                y_p3)), (int(color[0]), int(color[1]), int(color[2])), thickness)
-            text = ('{:s}: {:.3f}').format(label, confidence)
-            cv2.putText(imgOut, text, (int(x_p1), int(y_p1+20)), font,
-                        fontScale, (255, 255, 255), thickness, cv2.LINE_AA)
-
-        # Publish visualization image
-        image_msg = self.bridge.cv2_to_imgmsg(imgOut, "rgb8")
-        self.pub_viz_.publish(image_msg)
 
     def warmup(self):
         self.weights = os.path.join(package_path, 'yolov5/weights', self.weights)
@@ -261,7 +225,7 @@ class detectManager:
         im0s = opencv_img
         img = letterbox(im0s, 640, stride=stride)[0]
         # Convert
-        img = img[:, :, ::-1].transpose(2, 0, 1)  # BGR to RGB, to 3x416x416
+        img = img.transpose(2, 0, 1) # to NCHW
         img = np.ascontiguousarray(img)
         # img = cv2.imread("")
 
@@ -272,14 +236,6 @@ class detectManager:
             img = img.unsqueeze(0)
         # Inference
         t1 = time_sync()
-        # print("\nhaha: 83945723\n")
-        # print(img.shape)
-        # print(img)
-        # print(self.conf_thres)
-        # print(self.iou_thres)
-        # print(self.classes)
-        # print(self.agnostic_nms)
-        # print("\nhaha: 02394857\n")
 
         pred = model(img, augment=False)[0]
         # Apply NMS
@@ -298,13 +254,6 @@ class detectManager:
 
             im0 = im0s
             p = self.path
-            # if webcam:  # batch_size >= 1
-            #     p, s, im0, frame = path[i], '%g: ' % i, im0s[i].copy(), dataset.count
-            # else:
-            #     p, s, im0, frame = path, '', im0s, getattr(dataset, 'frame', 0)
-            # p = Path(p)  # to Path
-            #save_path = str(self.save_dir + "/img.jpg")  # img.jpg
-            #txt_path = str(self.save_dir + "/labels/label")
             s = ''
             s += '%gx%g ' % img.shape[2:]  # print string
             gn = torch.tensor(im0.shape)[[1, 0, 1, 0]]  # normalization gain whwh
@@ -329,45 +278,20 @@ class detectManager:
 
                 # Write results
                 for *xyxy, conf, cls in reversed(det):
-                    if save_txt:  # Write to file
-                        xywh = (xyxy2xywh(torch.tensor(xyxy).view(1, 4)) /
-                                gn).view(-1).tolist()  # normalized xywh
-                        # label format
-                        line = (cls, *xywh, conf) if self.save_conf else (cls, *xywh)
-                        with open(txt_path + '.txt', 'a') as f:
-                            f.write(('%g ' * len(line)).rstrip() % line + '\n')
-                    if save_img or view_img:  # Add bbox to image
-                        label = f'{names[int(cls)]} {conf:.2f}'
-                        plot_one_box(xyxy, im0, label=label,
-                                    color=colors[int(cls)], line_thickness=3)
+                    label = f'{names[int(cls)]} {conf:.2f}'
+                    plot_one_box(xyxy, im0, label=label,
+                                color=colors[int(cls)], line_thickness=3)
             # Print time (inference + NMS)
             print(f'{s}Done. ({t2 - t1:.3f}s)')
             # Stream results
             if view_img:
-                cv2.imshow(str(p), im0)
+                im_bgr = cv2.cvtColor(im0, cv2.COLOR_RGB2BGR)
+                cv2.imshow(str(p), im_bgr)
                 cv2.waitKey(1)  # 1 millisecond
-            img_msg = self.bridge.cv2_to_imgmsg(im0, encoding="bgr8")
+            img_msg = self.bridge.cv2_to_imgmsg(im0, encoding="rgb8")
             self.pub_viz_.publish(img_msg)
-            # Save results (image with detections)
-            if save_img:
-                if dataset.mode == 'image':
-                    cv2.imwrite(save_path, im0)
-                else:  # 'video'
-                    if vid_path != save_path:  # new video
-                        vid_path = save_path
-                        if isinstance(vid_writer, cv2.VideoWriter):
-                            vid_writer.release()  # release previous video writer
-                        fourcc = 'mp4v'  # output video codec
-                        fps = vid_cap.get(cv2.CAP_PROP_FPS)
-                        w = int(vid_cap.get(cv2.CAP_PROP_FRAME_WIDTH))
-                        h = int(vid_cap.get(cv2.CAP_PROP_FRAME_HEIGHT))
-                        vid_writer = cv2.VideoWriter(
-                            save_path, cv2.VideoWriter_fourcc(*fourcc), fps, (w, h))
-                    vid_writer.write(im0)
         self.pub_.publish(detection_results)
-        #if save_txt or save_img:
-        #    s = f"\n{len(list(save_dir.glob('labels/*.txt')))} labels saved to {save_dir / 'labels'}" if save_txt else ''
-            #print(f"Results saved to {save_dir}{s}")
+
 
         print(f'Done. ({time.time() - t0:.3f}s)')
 
