@@ -23,7 +23,7 @@ from utils.datasets import LoadStreams, LoadImages
 from utils.general import check_img_size, check_requirements, check_imshow, non_max_suppression, apply_classifier, \
     scale_coords, xyxy2xywh, strip_optimizer, set_logging, increment_path
 from utils.plots import plot_one_box
-from utils.torch_utils import select_device, load_classifier, time_synchronized
+from utils.torch_utils import select_device, time_sync
 from utils.datasets import letterbox
 
 # Deep learning imports
@@ -235,13 +235,13 @@ class detectManager:
         if img.ndimension() == 3:
             img = img.unsqueeze(0)
         # Inference
-        t1 = time_synchronized()
+        t1 = time_sync()
 
         pred = model(img, augment=False)[0]
         # Apply NMS
         pred = non_max_suppression(
             pred, self.conf_thres, self.iou_thres, classes=self.classes, agnostic=self.agnostic_nms)
-        t2 = time_synchronized()
+        t2 = time_sync()
         # Apply Classifier
         if classify:
             pred = apply_classifier(pred, modelc, img, im0s)
@@ -291,8 +291,8 @@ class detectManager:
             img_msg = self.bridge.cv2_to_imgmsg(im0, encoding="rgb8")
             self.pub_viz_.publish(img_msg)
         self.pub_.publish(detection_results)
-        
-        
+
+
         print(f'Done. ({time.time() - t0:.3f}s)')
 
 
